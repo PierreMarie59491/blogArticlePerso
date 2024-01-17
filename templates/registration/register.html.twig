@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %} {% block title %}Inscription{% endblock %} {% block
+body %}
+<h1>Inscription</h1>
+
+{{ form_errors(registrationForm) }}
+
+{{ form_start(registrationForm) }}
+<div class="row">
+  <div class="col-6">
+    {{ form_row(registrationForm.Prenom, {'attr' :{'class':'form-control', 'placeholder':'Entrez votre prénom'
+    }}) }}
+  </div>
+  <div class="col-6">
+    {{ form_row(registrationForm.Nom, {'attr' :{'class':'form-control', 'placeholder':'Entrez votre nom'
+    }}) }}
+  </div>
+  <div class="col-6">
+    {{ form_row(registrationForm.telephone, {'attr' :{'class':'form-control', 'placeholder':'Entrez votre numéro de téléphone'
+    }}) }}
+  </div>
+  <div class="col-6">
+    {{ form_row(registrationForm.email, {'attr' :{'class':'form-control', 'placeholder':'Entrez votre Email'
+    }}) }}
+  </div>
+  <div class="col-6">
+    {{
+      form_row(registrationForm.plainPassword.first, {'attr' :{'class':'form-control', 'placeholder':'Entrez votre mot de passe'
+    }}, {
+        label: "Mot de Passe"
+      }) }}
+      </div>
+      <div class="col-6">
+    {{
+      form_row(registrationForm.plainPassword.second, {'attr' :{'class':'form-control', 'placeholder':'Confirmez votre mot de passe'
+    }}, {
+        label: "Mot de Passe"
+      })
+    }} 
+
+  </div>
+</div>
+{# {{ form_row(registrationForm.agreeTerms) }} #}
+
+<button type="submit" class="btn btn-outline-primary">Inscription</button>
+{{ form_end(registrationForm) }}
+{% endblock %}
