@@ -1,46 +1,94 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Article index{% endblock %} {%
+block body %}
+<h1>Bienvenu sur le blog</h1>
+{% if app.user == null %} Veuillez vous connecter pour acceder aux articles ! {%
+else %}
+<h1>Bienvenu !!!</h1>
 
-{% block title %}Article index{% endblock %}
+<div class="row">
+  {% for article in articles %}
+  <div class="col-md-4">
+    <div class="card mb-3" style="max-width: 540px;min-width:500px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            {% if article.image %}
+            <img src="{{ asset('images/articles/')}}{{article.image}}" width="150" alt="...">
+            {% else %}
+            <img src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"  width="150"  alt="...">
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{article.titre}}</h5>
+              <p class="card-text">{{article.resume}}</p>
+              <p class="card-text">{{dump(article.createdAt)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  {% endfor %}
+</div>
 
-{% block body %}
-    <h1>Bienvenu sur le blog</h1>
-{% if app.user == null %}
-Veuillez vous  connecter pour acceder aux articles !   
-{% else %}
-    
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Titre</th>
-                <th>Resume</th>
-                {# <th>Description</th> #}
-                <th>CreatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-            <tr>
-                <td>{{ article.id }}</td>
-                <td>{{ article.titre }}</td>
-                <td>{{ article.resume }}</td>
-                {# <td>{{ article.description }}</td> #}
-                <td>{{ article.createdAt ? article.createdAt|date('d-m-Y H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_article_show', {'id': article.id}) }}">Voir</a>
-                    <a href="{{ path('app_article_edit', {'id': article.id}) }}">Modifier</a>
-                </td>
-            </tr>
+<table class="table">
+  <thead>
+    <tr>
+      {#
+      <th>Id</th>
+      #}
+      <th>Titre</th>
+      <th>Resume</th>
+      <th>Image</th>
+      {#
+      <th>Description</th>
+      #}
+      <th>CreatedAt</th>
+      <th>actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for article in articles %}
+    <tr>
+      {#
+      <td>{{ article.id }}</td>
+      #}
+      <td>{{ article.titre }}</td>
+      <td>{{ article.resume }}</td>
+      <td>
+        {% if article.image == null %}
+        <img
+          src="https://img.freepik.com/vecteurs-premium/vecteur-icone-image-par-defaut-page-image-manquante-pour-conception-site-web-application-mobile-aucune-photo-disponible_87543-11093.jpg"
+          width="150"
+          alt=""
+        />
         {% else %}
-            <tr>
-                <td colspan="6">Aucun article publié</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <img
+          src="{{ asset('images/articles/') }}{{ article.image }}"
+          width="150"
+          alt=""
+        />
+        {% endif %}
+      </td>
+      {#
+      <td>{{ article.description }}</td>
+      #}
+      <td>
+        {{ article.createdAt ? article.createdAt|date('d-m-Y H:i:s') : '' }}
+      </td>
+      <td>
+        <a href="{{ path('app_article_show', { id: article.id }) }}">Voir</a>
+        <a href="{{ path('app_article_edit', { id: article.id }) }}"
+          >Modifier</a
+        >
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6">Aucun article publié</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-    <a href="{{ path('app_article_new') }}">Créer un nouvel article</a>
-    {% endif %}
-{% endblock %}
+<a href="{{ path('app_article_new') }}">Créer un nouvel article</a>
+{% endif %} {% endblock %}
