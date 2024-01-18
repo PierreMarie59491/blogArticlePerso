@@ -1,0 +1,7 @@
+{{ form_start(form) }}
+    {# {{ form_widget(form) }} #}
+    {{ form_row(form.titre) }}
+    {{ form_row(form.resume) }}
+    {{ form_row(form.description) }}
+    <button class="btn btn-outline-success">{{ button_label|default('Je poste mon article') }}</button>
+{{ form_end(form) }}
