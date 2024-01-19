@@ -11,12 +11,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Entity\Commentaire;
+use App\Form\CommentaireType;
+use App\Repository\CommentaireRepository;
+
+
+
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
     public function index(ArticleRepository $articleRepository): Response
     {
+       
         return $this->render('article/index.html.twig', [
             'articles' => $articleRepository->findAll(),
         ]);
@@ -30,8 +37,14 @@ class ArticleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+           //GET USER 
+           
+            $article-> setUser($this->getUser());
             $entityManager->persist($article);
             $entityManager->flush();
+
+$this->addFlash('success', 'Bravo, votre article est publiée.');
+
 
             return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -42,11 +55,33 @@ class ArticleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_show', methods: ['GET'])]
-    public function show(Article $article): Response
+    #[Route('/{id}', name: 'app_article_show', methods: ['GET', 'POST'])]
+    public function show(Article $article, Request $request, EntityManagerInterface $entityManager,CommentaireRepository $commentaireRepository): Response
     {
+         //Commentaire
+
+         $commentaire = new Commentaire();
+         $form = $this->createForm(CommentaireType::class, $commentaire);
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted() && $form->isValid()) {
+
+            //recupération de l'article
+            $commentaire->setPost($article);
+
+            //Récupération du user
+            $commentaire->setAuteur($this->getUser());
+
+             $entityManager->persist($commentaire);
+             $entityManager->flush();
+ 
+            //  return $this->redirectToRoute('app_commentaire_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_article_show', ['id' =>$article->getId()]);
+         }
         return $this->render('article/show.html.twig', [
             'article' => $article,
+            'form' => $form,
+            'commentaires' => $commentaireRepository->findBy(['post'=>$article])
         ]);
     }
 

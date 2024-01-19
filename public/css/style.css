@@ -3,9 +3,14 @@ body {
 }
 
 .navbar, .navbar-expand-lg, .bg-body-tertiary{
-    background-color: rgb(255, 111, 0);
+    background-color: rgb(93, 0, 255);
 }
 
 .card {
 background-color: rgb(167, 222, 37);
+}
+
+.navbarperso{
+    position:sticky;
+    background-color: aquamarine;
 }

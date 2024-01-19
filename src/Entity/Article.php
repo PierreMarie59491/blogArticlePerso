@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -36,8 +38,15 @@ class Article
     #[Vich\UploadableField(mapping: 'articles', fileNameProperty: 'image')]
     private ?File $imageFile = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $user = null;
+
+    #[ORM\OneToMany(mappedBy: 'post', targetEntity: Commentaire::class)]
+    private Collection $commentaires;
+
     public function __construct() {
         $this->createdAt = new \DateTimeImmutable();
+        $this->commentaires = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -120,4 +129,46 @@ class Article
     {
         return $this->imageFile;
 }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getPost() === $this) {
+                $commentaire->setPost(null);
+            }
+        }
+
+        return $this;
+    }
 }
