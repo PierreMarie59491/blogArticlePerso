@@ -7,3 +7,7 @@ controllers:
 blogArticle:
     path: /
     controller: App\Controller\ArticleController::index
+
+navbar:
+    path: /
+    controller: App\Controller\ArticleController::index

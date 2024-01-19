@@ -1,0 +1,11 @@
+body {
+    background-color: skyblue;
+}
+
+.navbar, .navbar-expand-lg, .bg-body-tertiary{
+    background-color: rgb(255, 111, 0);
+}
+
+.card {
+background-color: rgb(167, 222, 37);
+}
