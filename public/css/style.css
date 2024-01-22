@@ -14,3 +14,10 @@ background-color: rgb(167, 222, 37);
     position:sticky;
     background-color: aquamarine;
 }
+
+.navigation{
+background-color: brown;
+position: sticky;
+display: flex;
+flex-direction: row-reverse;
+}

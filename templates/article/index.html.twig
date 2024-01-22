@@ -60,4 +60,9 @@ Créer un nouvel article</a>
 
 {% endif %}
 
+{# display navigation #}
+<div class="navigation">
+    {{ knp_pagination_render(articles) }}
+</div>
+
  {% endblock %} 

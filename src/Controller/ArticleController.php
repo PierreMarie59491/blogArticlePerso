@@ -16,16 +16,33 @@ use App\Form\CommentaireType;
 use App\Repository\CommentaireRepository;
 
 
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/article')]
 class ArticleController extends AbstractController
 {
     #[Route('/', name: 'app_article_index', methods: ['GET'])]
-    public function index(ArticleRepository $articleRepository): Response
+    public function index(ArticleRepository $articleRepository, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
     {
-       
+
+
+
+        
+        $pagination = $paginator->paginate(
+            $articleRepository->paginator(), /* QUERY NOT RESULT */
+            $request->query->getInt('page', 1), /*page number */
+            6 /*limit per page*/
+        );
+
+
+        
+    //    $articles = $articleRepository->getRepository('App:Article')->getLastInserted('App:Article');
+
         return $this->render('article/index.html.twig', [
-            'articles' => $articleRepository->findAll(),
+            // 'articles' => $articleRepository->findAll(),
+            // 'articlesLast' => $articleRepository->getLastInserted(),
+            'articles' => $pagination,
         ]);
     }
 

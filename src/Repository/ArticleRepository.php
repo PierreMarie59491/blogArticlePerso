@@ -36,6 +36,20 @@ class ArticleRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+public function getLastInserted() {
+    return $this->createQueryBuilder('a')
+    ->orderBy('a.id', 'DESC')
+    ->getQuery()
+    ->getResult()
+    ;
+}
+
+public function paginator() {
+    return $this->createQueryBuilder('a')
+    ->orderBy('a.id', 'DESC')
+    ;
+}
+
 //    public function findOneBySomeField($value): ?Article
 //    {
 //        return $this->createQueryBuilder('a')
