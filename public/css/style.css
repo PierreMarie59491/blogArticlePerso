@@ -1,9 +1,11 @@
 body {
-    background-color: skyblue;
+    /* background-color: skyblue; */
+    background-image: url("../images/r-65aa3fcfc0b4e707023537.jpg");
+    background-image: extending;
 }
 
 .navbar, .navbar-expand-lg, .bg-body-tertiary{
-    background-color: rgb(93, 0, 255);
+    /* background-color: rgb(93, 0, 255); */
 }
 
 .card {
@@ -15,9 +17,9 @@ background-color: rgb(167, 222, 37);
     background-color: aquamarine;
 }
 
-.navigation{
-background-color: brown;
+.pagination{
+/* background-color: skyblue; */
 position: sticky;
 display: flex;
-flex-direction: row-reverse;
+flex-direction: row;
 }

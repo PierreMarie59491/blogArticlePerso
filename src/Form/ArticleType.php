@@ -17,7 +17,12 @@ class ArticleType extends AbstractType
             ->add('titre')
             ->add('resume')
             ->add('description')
-            ->add('imageFile', VichImageType::class)       
+            ->add('imageFile', VichImageType::class, [
+                'required'=> false,
+                'allow_delete'=> false,
+                'download_label' => false,
+                'download_uri' => false,
+                 ])
          // ->add('createdAt')
         ;
     }

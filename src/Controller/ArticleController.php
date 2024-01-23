@@ -102,9 +102,14 @@ $this->addFlash('success', 'Bravo, votre article est publiée.');
         ]);
     }
 
+
+
     #[Route('/{id}/edit', name: 'app_article_edit', methods: ['GET', 'POST'])]
+    
     public function edit(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
+
+        $this->denyAccessUnlessGranted("ARTICLE_EDIT", $article);
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
@@ -120,13 +125,15 @@ $this->addFlash('success', 'Bravo, votre article est publiée.');
         ]);
     }
 
-    #[Route('/{id}', name: 'app_article_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_article_delete', methods: ['GET','POST'])]
     public function delete(Request $request, Article $article, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
+        $this->denyAccessUnlessGranted("ARTICLE_DELETE", $article);
+
+        // if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
             $entityManager->remove($article);
             $entityManager->flush();
-        }
+        // }
 
         return $this->redirectToRoute('app_article_index', [], Response::HTTP_SEE_OTHER);
     }
